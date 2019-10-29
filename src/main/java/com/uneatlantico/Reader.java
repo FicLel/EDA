@@ -8,10 +8,36 @@ import java.util.Arrays;
 public class Reader {
 	public static final String SEPARATOR=",";
 	public static final String QUOTE="\"";
-	public void readFile() throws IOException {
+	
+	//lee el archivo de los aeropuertos
+	public void readFileAirports() throws IOException {
 		BufferedReader lector = null; 
 		try { 
 			lector =new BufferedReader(new FileReader("Resources/airports.csv")); 
+			String line = lector.readLine(); 
+			while (null != line) { 
+				String [] fields = line.split(SEPARATOR); 
+				System.out.println(Arrays.toString(fields));  
+				line = lector.readLine(); 
+			} 
+		} catch (Exception e) { 
+			System.out.println(e); 
+		} finally { 
+			if (null!=lector) { 
+				try {
+					lector.close();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			} 
+		}	
+	}
+	
+	public void readFileRoutes() throws IOException {
+		BufferedReader lector = null; 
+		try { 
+			lector =new BufferedReader(new FileReader("Resources/routes.csv")); 
 			String line = lector.readLine(); 
 			while (null != line) { 
 				String [] fields = line.split(SEPARATOR); 
