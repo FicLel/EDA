@@ -18,19 +18,44 @@ public class Reader {
 		String [] fields =null;
 		ArrayList<Airport> airports = new ArrayList<Airport>();
 		Airport newAirport = null;
+		String str = null;
 		try { 
 			lector =new BufferedReader(new FileReader("Resources/airports.csv")); 
 			String line = lector.readLine(); 
 			while (null != line) { 
 				fields = line.split(SEPARATOR); 
-				System.out.println(Arrays.toString(fields));
+				
 				newAirport = new Airport();
 				newAirport.setId(fields[0]);
 				newAirport.setName(fields[1]);
-				newAirport.setCountry(fields[2]);
-				newAirport.setIataCode(fields[3]);
-				airports.add(newAirport);
-				line = lector.readLine(); 
+				newAirport.setCity(fields[2]);
+				newAirport.setCountry(fields[3]);
+				newAirport.setIataCode(fields[4]);
+				newAirport.setOaciCode(fields[5]);
+				str=fields[6];
+  		   try {
+  		     newAirport.setLatitude(Double.parseDouble(str));
+  		        
+  		   }catch (NumberFormatException e){
+  		       
+  		   } 
+			   str=fields[7];
+			   try {
+           newAirport.setLongitude(Double.parseDouble(str));
+           
+         }catch (NumberFormatException e){
+              
+         }
+			   str=fields[8];
+			   try {
+           newAirport.setAltitude(Double.parseDouble(str));
+           
+         }catch (NumberFormatException e){
+              
+         }
+			   
+			   airports.add(newAirport);
+			   line = lector.readLine(); 
 			} 
 		} catch (Exception e) { 
 			System.out.println(e); 

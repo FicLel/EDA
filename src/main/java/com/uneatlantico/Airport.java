@@ -9,9 +9,9 @@ public class Airport {
 	private String city;
 	private String oaciCode;
 	private String iataCode;
-	private float latitude;
-	private float longitude;
-	private float altitude;
+	private double latitude;
+	private double longitude;
+	private double altitude;
 	private double timeZone;
 	public String getId() {
     return id;
@@ -49,22 +49,22 @@ public class Airport {
   public void setIataCode(String iataCode) {
     this.iataCode = iataCode;
   }
-  public float getLatitude() {
+  public double getLatitude() {
     return latitude;
   }
-  public void setLatitude(float latitude) {
+  public void setLatitude(double latitude) {
     this.latitude = latitude;
   }
-  public float getLongitude() {
+  public double getLongitude() {
     return longitude;
   }
-  public void setLongitude(float longitude) {
+  public void setLongitude(double longitude) {
     this.longitude = longitude;
   }
-  public float getAltitude() {
+  public double getAltitude() {
     return altitude;
   }
-  public void setAltitude(float altitude) {
+  public void setAltitude(double altitude) {
     this.altitude = altitude;
   }
   public double getTimeZone() {
