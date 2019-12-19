@@ -11,10 +11,11 @@ public class App
     public static void main( String[] args ) throws IOException
     {
         Reader r = new Reader();
-        System.out.println(r.readFileAirports());
+        r.readFileAirports();
+        //System.out.println(r.readFileAirports());
         
-        Reader routes = new Reader();
-        System.out.println(routes.readFileRoutes());
+//        Reader routes = new Reader();
+//        System.out.println(routes.readFileRoutes());
         
     }
 }
