@@ -1,32 +1,36 @@
 package com.uneatlantico;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.ArrayList;
+
 
 public class Reader {
 	public static final String SEPARATOR=",";
 	public static final String QUOTE="\"";
 	
-	//Read the airports file
-	public String[] readFileAirports() throws IOException {
+	//lee el archivo de los aeropuertos
+	public ArrayList<Airport> readFileAirports() throws IOException {
 		BufferedReader lector = null; 
 		String [] fields =null;
-		
+		ArrayList<Airport> airports = new ArrayList<Airport>();
+		Airport newAirport = null;
 		try { 
-			lector =new BufferedReader(new FileReader("Resources/airports.csv"));
-			String line;
-			int count = 0;
-			while ((line = lector.readLine()) !=null) {  //while there are lines
-				fields = line.split(SEPARATOR);  //slip every line with a ,
-				System.out.println(fields[1]); //prints only the first column of each row
-				count = count +1; //counter that for each iteration adds 1
-				if (count >=10 ) {
-					break;  //stops on the tenth time 
-				}
-				// System.out.println(Arrays.toString(fields));  
-				// line = lector.readLine(); 
+			lector =new BufferedReader(new FileReader("Resources/airports.csv")); 
+			String line = lector.readLine(); 
+			while (null != line) { 
+				fields = line.split(SEPARATOR); 
+				System.out.println(Arrays.toString(fields));
+				newAirport = new Airport();
+				newAirport.setId(fields[0]);
+				newAirport.setName(fields[1]);
+				newAirport.setCountry(fields[2]);
+				newAirport.setIataCode(fields[3]);
+				airports.add(newAirport);
+				line = lector.readLine(); 
 			} 
 		} catch (Exception e) { 
 			System.out.println(e); 
@@ -40,7 +44,7 @@ public class Reader {
 				} 
 			} 
 		}
-		return fields;
+		return airports;
 	}
 	
 	//Reed the routes file
@@ -70,6 +74,4 @@ public class Reader {
 		}
 		return fields;
 	}
-	
 }
-
