@@ -72,21 +72,44 @@ public class Reader {
 		return airports;
 	}
 	
-	//metodo para ller el archivo de rutas 
-	public String[] readFileRoutes() throws IOException {
+	//Reed the routes file
+	public ArrayList<Route> readFileRoutes(ArrayList<Airport> airports) throws IOException {
 		BufferedReader lector = null; 
 		String [] fields = null;
-		
+		ArrayList<Route> routes = new ArrayList<Route>();
+		Route newRoute = null;
+		Airport newAirport = null;
+		Airport newAirport2 = null;
 		try { 
 			lector =new BufferedReader(new FileReader("Resources/routes.csv")); 
 			String line = lector.readLine(); 
 			while (null != line) { 
-				fields = line.split(SEPARATOR); 
-				System.out.println(Arrays.toString(fields));  
+				fields = line.split(SEPARATOR);
+				newRoute = new Route();
+				
+				for(Airport airport : airports) {
+			    if(fields[2].equals(airport.getIataCode())) {
+            newAirport = airport;
+            break;
+          }
+				}
+				newRoute.setSourceAirport(newAirport);
+        newRoute.setDestinationAirportID(newAirport.getId());
+				for(Airport airport : airports) {
+          if(fields[4].equals(airport.getIataCode())) {
+            newAirport2 = airport;
+            break;
+          }
+        }
+				newRoute.setSourceAirport(newAirport2);
+        newRoute.setDestinationAirportID(newAirport2.getId());
+				newRoute.setPathWeight(newRoute.getSourceAirport().getLatitude(), newRoute.getDestinationAirport().getLatitude(), newRoute.getSourceAirport().getLongitude(), newRoute.getDestinationAirport().getLongitude());
+				System.out.println(newRoute.getWeight());
+				routes.add(newRoute);
 				line = lector.readLine(); 
 			} 
 		} catch (Exception e) { 
-			System.out.println(e); 
+		  e.printStackTrace();
 		} finally { 
 			if (null!=lector) { 
 				try {
@@ -97,8 +120,6 @@ public class Reader {
 				} 
 			} 
 		}
-		return fields;
+		return routes;
 	}
-	
 }
-

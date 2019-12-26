@@ -11,15 +11,22 @@ import org.graphstream.ui.swingViewer.Viewer;
  * Hello world!
  *
  */
+
 public class App 
 {
+    @SuppressWarnings("unused")
     public static void main( String[] args ) throws IOException
     {
         Reader r = new Reader();
-        Graph graph = new SingleGraph("World");
-        addNodesToGraph(r.readFileAirports(),graph);
-        Viewer viewer = graph.display();
-        viewer.disableAutoLayout();
+        ArrayList<Airport> airportes = r.readFileAirports();
+        ArrayList<Route> routes = r.readFileRoutes(airportes);
+//        for(Route ro :  routes) {
+//          System.out.println(ro.getDestinationAirportID());
+//        }
+//        Graph graph = new SingleGraph("World");
+//        addNodesToGraph(r.readFileAirports(),graph);
+//        Viewer viewer = graph.display();
+//        viewer.disableAutoLayout();
         //System.out.println(total);
         
 //        Reader routes = new Reader();
@@ -35,4 +42,8 @@ public class App
         node.setAttribute("y", a.getLatitude());
       }
     }
+    public static void addEdgesToGraph(ArrayList<Route> routes, Graph grafo) {
+      
+    }
+
 }
