@@ -53,8 +53,10 @@ public class Reader {
          }catch (NumberFormatException e){
               
          }
+			   if(newAirport != null) {
+			     airports.add(newAirport);
+			   }
 			   
-			   airports.add(newAirport);
 			   line = lector.readLine(); 
 			} 
 		} catch (Exception e) { 
