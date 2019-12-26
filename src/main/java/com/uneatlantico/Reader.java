@@ -112,6 +112,7 @@ public class Reader {
 			} 
 		} catch (Exception e) { 
 		  e.printStackTrace();
+		  System.out.println(e.getMessage());
 		} finally { 
 			if (null!=lector) { 
 				try {
@@ -119,6 +120,7 @@ public class Reader {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println(e.getMessage());
 				} 
 			} 
 		}

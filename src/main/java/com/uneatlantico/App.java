@@ -23,10 +23,16 @@ public class App
 //        for(Route ro :  routes) {
 //          System.out.println(ro.getDestinationAirportID());
 //        }
-        Graph graph = new SingleGraph("World");
-        addNodesToGraph(r.readFileAirports(),graph);
-        Viewer viewer = graph.display();
-        viewer.disableAutoLayout();
+        try {
+          Graph graph = new SingleGraph("World");
+          addNodesToGraph(r.readFileAirports(),graph);
+          Viewer viewer = graph.display();
+          viewer.disableAutoLayout();
+        }
+        catch(Exception e) {
+          System.out.println(e.getMessage());
+        }
+        
         //System.out.println(total);
         
 //        Reader routes = new Reader();
@@ -45,6 +51,7 @@ public class App
           }
           catch(Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
           }
           
         }
