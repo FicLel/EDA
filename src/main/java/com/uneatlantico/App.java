@@ -36,11 +36,17 @@ public class App
     public static void addNodesToGraph(ArrayList<Airport> airports, Graph grafo) {
       for(Airport a :  airports) {
         if(a != null) {
-          grafo.addNode(a.getId());
-          Node node = grafo.getNode(a.getId());
-          node.addAttribute("data", a);
-          node.setAttribute("x", a.getLongitude());
-          node.setAttribute("y", a.getLatitude());
+          try {
+            grafo.addNode(a.getId());
+            Node node = grafo.getNode(a.getId());
+            node.addAttribute("data", a);
+            node.setAttribute("x", a.getLongitude());
+            node.setAttribute("y", a.getLatitude());
+          }
+          catch(Exception e) {
+            e.printStackTrace();
+          }
+          
         }
         
       }
