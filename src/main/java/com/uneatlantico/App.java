@@ -19,14 +19,14 @@ public class App
     {
         Reader r = new Reader();
         ArrayList<Airport> airportes = r.readFileAirports();
-        ArrayList<Route> routes = r.readFileRoutes(airportes);
+        //ArrayList<Route> routes = r.readFileRoutes(airportes);
 //        for(Route ro :  routes) {
 //          System.out.println(ro.getDestinationAirportID());
 //        }
-//        Graph graph = new SingleGraph("World");
-//        addNodesToGraph(r.readFileAirports(),graph);
-//        Viewer viewer = graph.display();
-//        viewer.disableAutoLayout();
+        Graph graph = new SingleGraph("World");
+        addNodesToGraph(r.readFileAirports(),graph);
+        Viewer viewer = graph.display();
+        viewer.disableAutoLayout();
         //System.out.println(total);
         
 //        Reader routes = new Reader();
