@@ -12,6 +12,9 @@ import org.graphstream.ui.swingViewer.Viewer;
  *
  */
 
+// https://stackoverflow.com/questions/28458212/how-to-use-static-layout-in-graphstream
+//Es para cambiar vieww y metodos
+
 public class App 
 {
     @SuppressWarnings("unused")
@@ -19,19 +22,25 @@ public class App
     {
         Reader r = new Reader();
         ArrayList<Airport> airportes = r.readFileAirports();
-        //ArrayList<Route> routes = r.readFileRoutes(airportes);
+        for(Airport a :  airportes) {
+          System.out.println(a.getIataCode()+ " "+a.getLatitude());
+          
+        }
+//        ArrayList<Route> routes = r.readFileRoutes(airportes);
 //        for(Route ro :  routes) {
 //          System.out.println(ro.getDestinationAirportID());
 //        }
-        try {
-          Graph graph = new SingleGraph("World");
-          addNodesToGraph(r.readFileAirports(),graph);
-          Viewer viewer = graph.display();
-          viewer.disableAutoLayout();
-        }
-        catch(Exception e) {
-          System.out.println(e.getMessage());
-        }
+//        try {
+//          Graph graph = new SingleGraph("World");
+//          graph.addAttribute("ui.antialias");
+//          graph.addAttribute("ui.quality");
+//          addNodesToGraph(r.readFileAirports(),graph);
+//          Viewer viewer = graph.display(false);
+//          viewer.disableAutoLayout();
+//        }
+//        catch(Exception e) {
+//          System.out.println(e.getMessage());
+//        }
         
         //System.out.println(total);
         
@@ -46,6 +55,8 @@ public class App
             grafo.addNode(a.getId());
             Node node = grafo.getNode(a.getId());
             node.addAttribute("data", a);
+            node.addAttribute("layout.frozen");
+            node.addAttribute("ui.frozen");
             node.setAttribute("x", a.getLongitude());
             node.setAttribute("y", a.getLatitude());
           }
