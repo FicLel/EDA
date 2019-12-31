@@ -28,6 +28,7 @@ public class App
           addNodesToGraph(r.readFileAirports(),graph);
           Viewer viewer = graph.display();
           viewer.disableAutoLayout();
+          graph.addAttribute("ui.stylesheet", "node { fill-mode: image-scaled; fill-image: url('https://www.gebco.net/data_and_products/gebco_web_services/web_map_service/images/gebco_wms.jpg'); }");
         }
         catch(Exception e) {
           System.out.println(e.getMessage());
