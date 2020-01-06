@@ -7,9 +7,16 @@ public class Route {
   
   private Airport sourceAirport;
   private String sourceAirportID;
+  private String sourceAirportIATA;
   private Airport destinationAirport;
   private String destinationAirportID;
+  private String destinationAirportIATA;
   private double weight;
+  
+  public Route() {
+    this.sourceAirport = null;
+    this.destinationAirport = null;
+  }
   
   public Airport getSourceAirport() {
     return sourceAirport;
@@ -77,4 +84,19 @@ public class Route {
 	public double getWeight() {
 	  return this.weight;
 	}
+	public String getSourceAirportIATA() {
+    return sourceAirportIATA;
+  }
+
+  public void setSourceAirportIATA(String sourceAirportIATA) {
+    this.sourceAirportIATA = sourceAirportIATA;
+  }
+
+  public String getDestinationAirportIATA() {
+    return destinationAirportIATA;
+  }
+
+  public void setDestinationAirportIATA(String destinationAirportIATA) {
+    this.destinationAirportIATA = destinationAirportIATA;
+  }
 }

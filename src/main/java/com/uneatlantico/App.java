@@ -22,17 +22,7 @@ public class App
     {
         Reader r = new Reader();
         ArrayList<Airport> airportes = r.readFileAirports();
-        for(Airport a :  airportes) {
-          System.out.println(a.getIataCode()+ " "+a.getLatitude());
-          
-        }
-//        ArrayList<Route> routes = r.readFileRoutes(airportes);
-//        for(Route ro :  routes) {
-//          System.out.println(ro.getDestinationAirportID());
-//        }
-//        try {
-//          Graph graph = new SingleGraph("World");
-//          graph.addAttribute("ui.antialias");
+        
 //          graph.addAttribute("ui.quality");
 //          addNodesToGraph(r.readFileAirports(),graph);
 //          Viewer viewer = graph.display(false);
