@@ -82,46 +82,113 @@ public class Reader {
 		return airports;
 	}
 	
-	//Reed the routes file
+	//Read route file without Airports 
+	public ArrayList<Route> readFileRoutes() throws IOException{
+	  BufferedReader lector = null; 
+    String [] fields = null;
+    ArrayList<Route> routes = new ArrayList<Route>();
+    Route newRoute = null;
+    Airport airport = null;
+    try { 
+      lector =new BufferedReader(new FileReader("Resources/routes.csv")); 
+      String line = lector.readLine(); 
+      while (null != line) { 
+        fields = line.split(SEPARATOR);
+        newRoute = new Route();
+        newRoute.setSourceAirportIATA(fields[2].replace("\"","").replaceAll("\\\\N",""));
+        newRoute.setSourceAirportID(fields[3].replace("\"","").replaceAll("\\\\N",""));
+        newRoute.setDestinationAirportIATA(fields[4].replace("\"","").replaceAll("\\\\N",""));
+        newRoute.setDestinationAirportID(fields[5].replace("\"","").replaceAll("\\\\N",""));
+        
+        routes.add(newRoute);
+        line = lector.readLine(); 
+      } 
+    } catch (Exception e) { 
+      e.printStackTrace();
+      System.out.println(e.getMessage());
+    } finally { 
+      if (null!=lector) { 
+        try {
+          lector.close();
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+          System.out.println(e.getMessage());
+        } 
+      } 
+    }
+    return routes;
+	}
+	
+	
+	/*
+	 * We read routes and assign Aiports in base of an arraylist by bring
+	 * @param ArrayList<Airport>
+	 * 
+	 * return ArrayList<Route>
+	 */
 	public ArrayList<Route> readFileRoutes(ArrayList<Airport> airports) throws IOException {
 		BufferedReader lector = null; 
 		String [] fields = null;
 		ArrayList<Route> routes = new ArrayList<Route>();
 		Route newRoute = null;
 		Airport newAirport = null;
-		Airport newAirport2 = null;
 		try { 
 			lector =new BufferedReader(new FileReader("Resources/routes.csv")); 
 			String line = lector.readLine(); 
 			while (null != line) { 
 				fields = line.split(SEPARATOR);
 				newRoute = new Route();
-				//At firts we assign the source aiport by comparing iata codes 
-				for(Airport airport : airports) {
-			    if(fields[2].equals(airport.getIataCode())) {
-            newAirport = airport;
-            break;
+				
+				newRoute.setSourceAirportIATA(fields[2].replace("\"","").replaceAll("\\\\N",""));
+				newRoute.setSourceAirportID(fields[3].replace("\"","").replaceAll("\\\\N",""));
+				
+				if(newRoute.getSourceAirportID().equals("")) {
+				  for(Airport airport : airports) {
+	          if(newRoute.getSourceAirportIATA().equals(airport.getIataCode())) {
+	            newRoute.setSourceAirport(airport);
+	            System.out.println("Origen: "+newRoute.getSourceAirport().getId());
+	            break;
+	          }
+	        }
+				}
+				else {
+				  for(Airport airport : airports) {
+            if(newRoute.getSourceAirportID().equals(airport.getId())) {
+              newRoute.setSourceAirport(airport);
+              System.out.println("Origen: "+newRoute.getSourceAirport().getId());
+              break;
+            }
           }
 				}
-				if(newAirport != null) {
-				  newRoute.setSourceAirport(newAirport);
-	        newRoute.setDestinationAirportID(newAirport.getId());
-				}
-				//Then we assign the the destination airport
-				for(Airport airport : airports) {
-          if(fields[4].equals(airport.getIataCode())) {
-            newAirport2 = airport;
-            break;
+				newRoute.setDestinationAirportIATA(fields[4].replace("\"","").replaceAll("\\\\N",""));
+        newRoute.setDestinationAirportID(fields[5].replace("\"","").replaceAll("\\\\N",""));
+        if(newRoute.getDestinationAirportID().equals("")) {
+          for(Airport airport : airports) {
+            if(newRoute.getDestinationAirportIATA().equals(airport.getIataCode())) {
+              newRoute.setDestinationAirport(airport);
+              System.out.println("Destino: "+newRoute.getDestinationAirport().getId());
+              break;
+            }
+          }
+        }else {
+          for(Airport airport : airports) {
+            if(newRoute.getDestinationAirportID().equals(airport.getId())) {
+              newRoute.setDestinationAirport(airport);
+              System.out.println("Destino: "+newRoute.getDestinationAirport().getId());
+              break;
+            }
           }
         }
-				if(newAirport2 != null) {
-				newRoute.setSourceAirport(newAirport2);
-        newRoute.setDestinationAirportID(newAirport2.getId());
-				newRoute.setPathWeight(newRoute.getSourceAirport().getLatitude(), newRoute.getDestinationAirport().getLatitude(), newRoute.getSourceAirport().getLongitude(), newRoute.getDestinationAirport().getLongitude());
-				System.out.println(newRoute.getWeight());
-				routes.add(newRoute);
-				}
-				System.out.println(newRoute.getWeight());
+				
+        if(newRoute.getDestinationAirport() != null && newRoute.getSourceAirport() != null) {
+          newRoute.setPathWeight(newRoute.getSourceAirport().getLatitude(), newRoute.getDestinationAirport().getLatitude(), newRoute.getSourceAirport().getLongitude(), newRoute.getDestinationAirport().getLongitude());
+          //System.out.println("destino: "+newRoute.getSourceAirportIATA() + " " + newRoute.getSourceAirportID()+" Final: "+newRoute.getDestinationAirportIATA() + " " + newRoute.getDestinationAirportID());
+          System.out.println(newRoute.getWeight());
+          routes.add(newRoute);
+        }
+				
+				
 				line = lector.readLine(); 
 			} 
 		} catch (Exception e) { 
