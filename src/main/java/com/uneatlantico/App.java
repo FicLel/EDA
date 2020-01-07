@@ -61,7 +61,8 @@ public class App
     }
     public static void addEdgesToGraph(ArrayList<Route> routes, Graph grafo) {
       for(Route r : routes) {
-        grafo.addEdge(r.getAirlineIATA()+r.getSourceAirportIATA()+r.getDestinationAirportIATA(), r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true);
+        grafo.addEdge(r.getAirlineIATA()+r.getSourceAirportIATA()+r.getDestinationAirportIATA(), r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true).setAttribute("weight", r.getWeight());;
+        
         
       }
     }
