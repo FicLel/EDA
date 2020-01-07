@@ -23,7 +23,7 @@ public class App
         Reader r = new Reader();
         ArrayList<Airport> airportes = r.readFileAirports();
         ArrayList<Route> routes = r.readFileRoutes(airportes);
-        Graph graph = new SingleGraph("World");
+        Graph graph = new MultiGraph("World");
         graph.addAttribute("ui.quality");
         addNodesToGraph(airportes,graph);
         addEdgesToGraph(routes,graph);
