@@ -95,14 +95,5 @@ public class Airport {
     this.timeZone = timeZone;
   }
 
-  public void getAllPossibleDestinations(String origin, Graph graph) {
-    Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, null);
-    dijkstra.init(graph);
-    dijkstra.setSource(graph.getNode(origin));
-    dijkstra.compute();
-
-    graph.display(true);
-    
-    dijkstra.clear();
-  }
+  
 }

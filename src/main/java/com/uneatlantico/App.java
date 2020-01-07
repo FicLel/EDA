@@ -2,7 +2,9 @@ package com.uneatlantico;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
 import org.graphstream.ui.swingViewer.Viewer;
@@ -29,6 +31,7 @@ public class App
         addEdgesToGraph(routes,graph);
         Viewer viewer = graph.display(false);
         viewer.disableAutoLayout();
+
 //        }
 //        catch(Exception e) {
 //          System.out.println(e.getMessage());
@@ -66,5 +69,13 @@ public class App
         
       }
     }
-
+    
+  public static Path dijkstra(String origin, String destination, Graph graph) {
+    Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, "weight");
+    dijkstra.init(graph);
+    dijkstra.setSource(graph.getNode(origin));
+    dijkstra.compute();
+    
+    return dijkstra.getPath(graph.getNode(destination));
+  }
 }
