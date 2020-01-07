@@ -20,13 +20,17 @@ public class App
     @SuppressWarnings("unused")
     public static void main( String[] args ) throws IOException
     {
+      
+      
         Reader r = new Reader();
         ArrayList<Airport> airportes = r.readFileAirports();
         ArrayList<Route> routes = r.readFileRoutes(airportes);
         Graph graph = new MultiGraph("World");
-        graph.addAttribute("ui.quality");
+        graph.setAttribute("ui.quality");
         addNodesToGraph(airportes,graph);
-        addEdgesToGraph(routes,graph);
+        //addEdgesToGraph(routes,graph);
+        graph.setAttribute("ui.stylesheet", style());
+        graph.addAttribute("ui.screenshot", "url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg')");
         Viewer viewer = graph.display(false);
         viewer.disableAutoLayout();
 //        }
@@ -47,8 +51,8 @@ public class App
             grafo.addNode(a.getId());
             Node node = grafo.getNode(a.getId());
             node.addAttribute("data", a);
-            node.addAttribute("layout.frozen");
-            node.addAttribute("ui.frozen");
+            node.setAttribute("layout.frozen");
+            node.setAttribute("ui.frozen");
             node.setAttribute("x", a.getLongitude());
             node.setAttribute("y", a.getLatitude());
           }
@@ -62,9 +66,27 @@ public class App
     public static void addEdgesToGraph(ArrayList<Route> routes, Graph grafo) {
       for(Route r : routes) {
         grafo.addEdge(r.getAirlineIATA()+r.getSourceAirportIATA()+r.getDestinationAirportIATA(), r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true).setAttribute("weight", r.getWeight());;
-        
-        
       }
+    }
+    public static String style() {
+      return "graph{"
+          + " fill-mode: image-scaled; "
+          + " fill-image: url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg');"
+          + "}"
+          
+          + "node {"
+          + "size: 3px;"
+          + "fill-color: red;"
+          + "text-mode: hidden;"
+          + "z-index: 0;"
+          + "}"
+
+          + "edge {"
+          + "size: 2px;"
+          + "shape: cubic-curve;"
+          + "fill-color: #cccccc;"
+          + "arrow-size: 2px, 2px;"
+          + "}";
     }
 
 }
