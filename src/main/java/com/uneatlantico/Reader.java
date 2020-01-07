@@ -139,7 +139,7 @@ public class Reader {
 			while (null != line) { 
 				fields = line.split(SEPARATOR);
 				newRoute = new Route();
-				
+				newRoute.setAirlineIATA(fields[0].replace("\"","").replaceAll("\\\\N",""));
 				newRoute.setSourceAirportIATA(fields[2].replace("\"","").replaceAll("\\\\N",""));
 				newRoute.setSourceAirportID(fields[3].replace("\"","").replaceAll("\\\\N",""));
 				
@@ -147,7 +147,7 @@ public class Reader {
 				  for(Airport airport : airports) {
 	          if(newRoute.getSourceAirportIATA().equals(airport.getIataCode())) {
 	            newRoute.setSourceAirport(airport);
-	            System.out.println("Origen: "+newRoute.getSourceAirport().getId());
+	            
 	            break;
 	          }
 	        }
@@ -156,7 +156,7 @@ public class Reader {
 				  for(Airport airport : airports) {
             if(newRoute.getSourceAirportID().equals(airport.getId())) {
               newRoute.setSourceAirport(airport);
-              System.out.println("Origen: "+newRoute.getSourceAirport().getId());
+              
               break;
             }
           }
@@ -167,7 +167,7 @@ public class Reader {
           for(Airport airport : airports) {
             if(newRoute.getDestinationAirportIATA().equals(airport.getIataCode())) {
               newRoute.setDestinationAirport(airport);
-              System.out.println("Destino: "+newRoute.getDestinationAirport().getId());
+              
               break;
             }
           }
@@ -175,7 +175,7 @@ public class Reader {
           for(Airport airport : airports) {
             if(newRoute.getDestinationAirportID().equals(airport.getId())) {
               newRoute.setDestinationAirport(airport);
-              System.out.println("Destino: "+newRoute.getDestinationAirport().getId());
+              
               break;
             }
           }
@@ -184,11 +184,9 @@ public class Reader {
         if(newRoute.getDestinationAirport() != null && newRoute.getSourceAirport() != null) {
           newRoute.setPathWeight(newRoute.getSourceAirport().getLatitude(), newRoute.getDestinationAirport().getLatitude(), newRoute.getSourceAirport().getLongitude(), newRoute.getDestinationAirport().getLongitude());
           //System.out.println("destino: "+newRoute.getSourceAirportIATA() + " " + newRoute.getSourceAirportID()+" Final: "+newRoute.getDestinationAirportIATA() + " " + newRoute.getDestinationAirportID());
-          System.out.println(newRoute.getWeight());
+          
           routes.add(newRoute);
         }
-				
-				
 				line = lector.readLine(); 
 			} 
 		} catch (Exception e) { 

@@ -10,8 +10,9 @@ public class EdgeWeightTest extends TestCase {
     double lat2 = 40.416798;
     double long1 = -3.809984;
     double long2 = -3.703788;
-
-    double distance = Route.getPathWeight(lat1, lat2, long1, long2);
+    Route r = new Route();
+    r.setPathWeight(lat1, lat2, long1, long2);
+    double distance = r.getWeight();
     
     assertEquals(338.8, distance);
   }

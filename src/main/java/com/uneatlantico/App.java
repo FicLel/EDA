@@ -22,11 +22,13 @@ public class App
     {
         Reader r = new Reader();
         ArrayList<Airport> airportes = r.readFileAirports();
-        
-//          graph.addAttribute("ui.quality");
-//          addNodesToGraph(r.readFileAirports(),graph);
-//          Viewer viewer = graph.display(false);
-//          viewer.disableAutoLayout();
+        ArrayList<Route> routes = r.readFileRoutes(airportes);
+        Graph graph = new SingleGraph("World");
+        graph.addAttribute("ui.quality");
+        addNodesToGraph(airportes,graph);
+        addEdgesToGraph(routes,graph);
+        Viewer viewer = graph.display(false);
+        viewer.disableAutoLayout();
 //        }
 //        catch(Exception e) {
 //          System.out.println(e.getMessage());
@@ -53,14 +55,15 @@ public class App
           catch(Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-          }
-          
+          } 
         }
-        
       }
     }
     public static void addEdgesToGraph(ArrayList<Route> routes, Graph grafo) {
-      
+      for(Route r : routes) {
+        grafo.addEdge(r.getAirlineIATA()+r.getSourceAirportIATA()+r.getDestinationAirportIATA(), r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true);
+        
+      }
     }
 
 }
