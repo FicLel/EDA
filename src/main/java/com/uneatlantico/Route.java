@@ -11,6 +11,7 @@ public class Route {
   private Airport destinationAirport;
   private String destinationAirportID;
   private String destinationAirportIATA;
+  private String airlineIATA;
   private double weight;
   
   public Route() {
@@ -98,5 +99,11 @@ public class Route {
 
   public void setDestinationAirportIATA(String destinationAirportIATA) {
     this.destinationAirportIATA = destinationAirportIATA;
+  }
+  public String getAirlineIATA() {
+    return airlineIATA;
+  }
+  public void setAirlineIATA(String airlineIATA) {
+    this.airlineIATA = airlineIATA;
   }
 }

@@ -7,9 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import java.awt.FlowLayout;
 
 public class Front extends JFrame {
 
@@ -37,24 +45,59 @@ public class Front extends JFrame {
 	public Front() {
 		setTitle("Trips");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 638, 446);
+		setBounds(1600,1000,1600,1000);
 		contentPane = new JPanel();
-		contentPane.setForeground(new Color(240, 248, 255));
-		contentPane.setBackground(new Color(240, 248, 255));
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.WEST);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
+		panel.setLayout(new GridLayout(2, 2, 0, 0));
+		panel.setBackground(Color.decode("#f3f4f6"));
+		panel.setBounds(500, 900, 500, 900);
 		
-		JTextArea txtrDestination = new JTextArea();
-		txtrDestination.setTabSize(3);
-		txtrDestination.setBackground(new Color(240, 248, 255));
-		txtrDestination.setFont(new Font("Monaco", Font.PLAIN, 13));
-		txtrDestination.setText("destination");
-		panel.add(txtrDestination);
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.decode("#f3f4f6"));
+		panel.add(panel_1);
+		panel_1.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		panel_1.add(panel_3);
+		panel_3.setBackground(Color.decode("#f3f4f6"));
+		panel_3.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JLabel whereLabel = new JLabel("Where");
+		panel_3.add(whereLabel);
+		whereLabel.setVerticalAlignment(SwingConstants.TOP);
+		whereLabel.setBorder(new EmptyBorder(20, 70, 0, 100));
+		whereLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		whereLabel.setMaximumSize(new Dimension(50, 100));
+		
+		JComboBox comboBox = new JComboBox();
+		panel_3.add(comboBox);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.decode("#f3f4f6"));
+		panel_1.add(panel_4);
+		panel_4.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JLabel toLabel = new JLabel("To");
+		panel_4.add(toLabel);
+		toLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		toLabel.setVerticalAlignment(SwingConstants.TOP);
+		toLabel.setBorder(new EmptyBorder(20, 50, 0, 100));
+		
+		JComboBox comboBox_1 = new JComboBox();
+		panel_4.add(comboBox_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.decode("#f3f4f6"));
+		panel.add(panel_2);
+		
+		
+		
 	}
 
 }
