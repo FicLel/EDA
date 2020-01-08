@@ -33,15 +33,7 @@ public class App
         graph.addAttribute("ui.screenshot", "url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg')");
         Viewer viewer = graph.display(false);
         viewer.disableAutoLayout();
-//        }
-//        catch(Exception e) {
-//          System.out.println(e.getMessage());
-//        }
-        
-        //System.out.println(total);
-        
-//        Reader routes = new Reader();
-//        System.out.println(routes.readFileRoutes());
+
         
     }
     public static void addNodesToGraph(ArrayList<Airport> airports, Graph grafo) {
