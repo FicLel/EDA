@@ -1,14 +1,25 @@
 package com.uneatlantico;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.imageio.ImageIO;
 
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
+import org.graphstream.ui.graphicGraph.GraphicGraph;
+import org.graphstream.ui.swingViewer.DefaultView;
+import org.graphstream.ui.swingViewer.LayerRenderer;
 import org.graphstream.ui.swingViewer.Viewer;
-
 /**
  * Hello world!
  *
@@ -23,22 +34,44 @@ public class App
     @SuppressWarnings("unused")
     public static void main( String[] args ) throws IOException
     {
-      
-      
+        Reader r = new Reader();
+        ArrayList<Airport> airportes = r.readFileAirports();
+        ArrayList<Route> routes = r.readFileRoutes(airportes);
+        Graph graph = new MultiGraph("World");
+        graph.setAttribute("ui.quality");
+        addNodesToGraph(airportes,graph);
+        //addEdgesToGraph(routes,graph);
+        graph.setAttribute("ui.stylesheet", style());
+        graph.addAttribute("ui.screenshot", "url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg')");
+        graph.addAttribute("ui.quality");
+        graph.addAttribute("ui.antialias");
+        Viewer viewer = graph.display(false);
+        viewer.disableAutoLayout();
+        DefaultView view = (DefaultView) viewer.getDefaultView(); 
+        view.resizeFrame(1366, 768);
+        view.setBackLayerRenderer(new LayerRenderer() {
+          public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
+              double minXGu, double minYGu, double maxXGu, double maxYGu) {
+            URL url;
+            URLConnection conn;
+            InputStream inputStream;
+            BufferedImage img = null;
 
-//        Reader r = new Reader();
-//        ArrayList<Airport> airportes = r.readFileAirports();
-//        ArrayList<Route> routes = r.readFileRoutes(airportes);
-//        Graph graph = new MultiGraph("World");
-//        graph.setAttribute("ui.quality");
-//        addNodesToGraph(airportes,graph);
-//        addEdgesToGraph(routes,graph);
-//        graph.setAttribute("ui.stylesheet", style());
-//        graph.addAttribute("ui.screenshot", "url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg')");
-//        Viewer viewer = graph.display(false);
-//        viewer.disableAutoLayout();
-    	MainUI main = new MainUI();
-    	main.setVisible(true);
+            try {
+              url = new URL("https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg");
+              conn = url.openConnection();
+              inputStream = conn.getInputStream();
+              img = ImageIO.read(inputStream);
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            
+            graphics.drawImage(img, 0, 0, 1366, 768, null);
+          }
+        });
+//    	MainUI main = new MainUI();
+//    	main.setVisible(true);
 
 
         
@@ -99,10 +132,7 @@ public class App
   }
   
   public static String style() {
-    return "graph{" + " fill-mode: image-scaled; "
-        + " fill-image: url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg');" + "}"
-
-        + "node {" + "size: 3px;" + "fill-color: red;" + "text-mode: hidden;" + "z-index: 0;" + "}"
+    return "node {" + "size: 3px;" + "fill-color: red;" + "text-mode: hidden;" + "z-index: 0;" + "}"
 
         + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "fill-color: #cccccc;" + "arrow-size: 2px, 2px;" + "}";
   }
