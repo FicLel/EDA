@@ -28,11 +28,13 @@ public class App
         Graph graph = new MultiGraph("World");
         graph.setAttribute("ui.quality");
         addNodesToGraph(airportes,graph);
-        //addEdgesToGraph(routes,graph);
+        addEdgesToGraph(routes,graph);
         graph.setAttribute("ui.stylesheet", style());
         graph.addAttribute("ui.screenshot", "url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg')");
         Viewer viewer = graph.display(false);
         viewer.disableAutoLayout();
+//    	MainUI main = new MainUI();
+//    	main.setVisible(true);
 
         
     }
