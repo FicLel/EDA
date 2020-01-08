@@ -25,6 +25,7 @@ public class App
     {
       
       
+
 //        Reader r = new Reader();
 //        ArrayList<Airport> airportes = r.readFileAirports();
 //        ArrayList<Route> routes = r.readFileRoutes(airportes);
@@ -38,6 +39,7 @@ public class App
 //        viewer.disableAutoLayout();
     	MainUI main = new MainUI();
     	main.setVisible(true);
+
 
         
     }
@@ -58,6 +60,7 @@ public class App
             System.out.println(e.getMessage());
           } 
 
+
         }
       }
     }
@@ -70,6 +73,7 @@ public class App
               r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true)
           .setAttribute("weight", r.getWeight());
       ;
+
     }
   }
 

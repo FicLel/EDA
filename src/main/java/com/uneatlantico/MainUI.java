@@ -1,7 +1,8 @@
 package com.uneatlantico;
 import java.awt.event.*; 
 import java.awt.*; 
-import javax.swing.*; 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder; 
 
 public class MainUI extends JFrame{
     private final JPanel mainPanel;
@@ -16,6 +17,9 @@ public class MainUI extends JFrame{
       leftPanel.setOpaque(true);
       leftPanel.setBackground(Color.decode("#f3f4f6"));
       leftPanel.setMaximumSize(new Dimension(500, 1000));
+      originAirport = new JComboBox();
+      originAirport.setBorder(new EmptyBorder(-160, 0, 0, 0));
+      
       
       rightPanel =  new JPanel();
       rightPanel.setOpaque(true);
@@ -25,7 +29,6 @@ public class MainUI extends JFrame{
       mainPanel.add(leftPanel);
       mainPanel.add(rightPanel);
       
-      originAirport =  new JComboBox();
       
       setPreferredSize(new Dimension(1600, 1000));
       getContentPane().setLayout(new GridLayout()); 
