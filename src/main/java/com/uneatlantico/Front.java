@@ -18,6 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.FlowLayout;
+import java.awt.CardLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class Front extends JFrame {
 
@@ -66,16 +69,17 @@ public class Front extends JFrame {
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3);
 		panel_3.setBackground(Color.decode("#f3f4f6"));
-		panel_3.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JLabel whereLabel = new JLabel("Where");
-		panel_3.add(whereLabel);
-		whereLabel.setVerticalAlignment(SwingConstants.TOP);
+		whereLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		whereLabel.setBorder(new EmptyBorder(20, 70, 0, 100));
 		whereLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		whereLabel.setMaximumSize(new Dimension(50, 100));
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.setBorder(new EmptyBorder(-160, 0, 0, 0));
+		panel_3.setLayout(new GridLayout(0, 1, 0, 0));
+		panel_3.add(whereLabel);
 		panel_3.add(comboBox);
 		
 		JPanel panel_4 = new JPanel();
@@ -86,10 +90,11 @@ public class Front extends JFrame {
 		JLabel toLabel = new JLabel("To");
 		panel_4.add(toLabel);
 		toLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		toLabel.setVerticalAlignment(SwingConstants.TOP);
+		toLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		toLabel.setBorder(new EmptyBorder(20, 50, 0, 100));
 		
 		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setBorder(new EmptyBorder(-160, 0, 0, 0));
 		panel_4.add(comboBox_1);
 		
 		JPanel panel_2 = new JPanel();
