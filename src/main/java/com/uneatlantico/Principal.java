@@ -6,6 +6,7 @@
 
 package com.uneatlantico;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -16,8 +17,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.Graph;
@@ -44,8 +49,50 @@ public class Principal extends javax.swing.JFrame {
      /**
      * Creates new form Principal
      */
+    @SuppressWarnings("unchecked")
     public Principal() {
+      Reader r = new Reader();
+      Vector model = new Vector();
+      try {
+        airportes =  r.readFileAirports();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+      
         initComponents();
+        jComboBox2.addItem(null);
+        jComboBox3.addItem(null);
+        for(Airport a : airportes) {
+          jComboBox2.addItem(new Item(a.getId(),a.getName()+"-"+a.getIataCode()));
+          jComboBox3.addItem(new Item(a.getId(),a.getName()+"-"+a.getIataCode()));
+        }    
+    }
+    class ItemRenderer extends BasicComboBoxRenderer
+    {
+        public Component getListCellRendererComponent(
+            JList list, Object value, int index,
+            boolean isSelected, boolean cellHasFocus)
+        {
+            super.getListCellRendererComponent(list, value, index,
+                isSelected, cellHasFocus);
+
+            if (value != null)
+            {
+                Item item = (Item)value;
+                setText( item.getDescription().toUpperCase() );
+            }
+
+            if (index == -1)
+            {
+                Item item = (Item)value;
+                setText( "" + item.getId() );
+            }
+
+
+            return this;
+        }
     }
 
     /**
@@ -100,7 +147,6 @@ public class Principal extends javax.swing.JFrame {
         jComboBox2.setEditable(true);
         jComboBox2.setFont(new java.awt.Font("Lucida Sans Typewriter", 2, 13)); // NOI18N
         jComboBox2.setForeground(new java.awt.Color(204, 204, 204));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jComboBox2MouseClicked(evt);
@@ -116,7 +162,6 @@ public class Principal extends javax.swing.JFrame {
         jComboBox3.setEditable(true);
         jComboBox3.setFont(new java.awt.Font("Lucida Sans Typewriter", 2, 13)); // NOI18N
         jComboBox3.setForeground(new java.awt.Color(204, 204, 204));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox3ActionPerformed(evt);
@@ -192,43 +237,55 @@ public class Principal extends javax.swing.JFrame {
       }
       Graph graph = new MultiGraph("World");
       graph.setAttribute("ui.quality");
-      addNodesToGraph(airportes,graph);
-      //addEdgesToGraph(routes,graph);
-      graph.setAttribute("ui.stylesheet", style());
-      graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
-      graph.addAttribute("ui.quality");
-      graph.addAttribute("ui.antialias");
-      Viewer viewer = graph.display(false);
-      viewer.disableAutoLayout();
-      viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
-      DefaultView view = (DefaultView) viewer.getDefaultView(); 
-      view.resizeFrame(1366, 768);
-      view.setBackLayerRenderer(new LayerRenderer() {
-        public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
-            double minXGu, double minYGu, double maxXGu, double maxYGu) {
-          URL url;
-          URLConnection conn;
-          InputStream inputStream;
-          BufferedImage img = null;
+      if (jComboBox2.getSelectedItem() != null) {
+        if (jComboBox3.getSelectedItem() != null) {
+          addNodesToGraph(airportes,graph);
+          addEdgesToGraph(routes,graph);
+          graph.setAttribute("ui.stylesheet", style());
+          graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
+          graph.addAttribute("ui.quality");
+          graph.addAttribute("ui.antialias");
+          Viewer viewer = graph.display(false);
+          viewer.disableAutoLayout();
+          viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+          DefaultView view = (DefaultView) viewer.getDefaultView(); 
+          view.resizeFrame(1366, 768);
+          view.setBackLayerRenderer(new LayerRenderer() {
+            public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
+                double minXGu, double minYGu, double maxXGu, double maxYGu) {
+              URL url;
+              URLConnection conn;
+              InputStream inputStream;
+              BufferedImage img = null;
 
-          try {
-            url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Mercator_projection_SW.jpg/800px-Mercator_projection_SW.jpg");
-            conn = url.openConnection();
-            inputStream = conn.getInputStream();
-            img = ImageIO.read(inputStream);
-          } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
+              try {
+                url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Mercator_projection_SW.jpg/800px-Mercator_projection_SW.jpg");
+                conn = url.openConnection();
+                inputStream = conn.getInputStream();
+                img = ImageIO.read(inputStream);
+              } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+              
+              graphics.drawImage(img, 0, 0, 1366, 768, null);
+            }
+          });
+          Item origin = (Item) jComboBox2.getSelectedItem();
+          Item destination = (Item) jComboBox3.getSelectedItem();
+          App.dijkstra(origin.getId(), destination.getId(), graph);
+        } else {
           
-          graphics.drawImage(img, 0, 0, 1366, 768, null);
         }
-      });
+      } else {
+        
+      }
+      
       
       //Termina Desvergue
       
       
-      jTextField1.getText();
+      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
@@ -338,15 +395,15 @@ public class Principal extends javax.swing.JFrame {
   }
   
   public static String style() {
-    return "node {" + "size: 3px;" + "fill-color: red;" + "text-mode: hidden;" + "z-index: 0;" + "}"
+    return "node {" + "size: 3px;" + "fill-color: red;" + "text-mode: hidden;" + "z-index: 2;" + "}"
 
-        + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "fill-color: #cccccc;" + "arrow-size: 2px, 2px;" + "}";
+        + "edge {" + "size: 0.5px;" + "shape: cubic-curve;" + "arrow-size: 2px, 2px;" +"z-index: -1;"+ "}";
   }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private JComboBox<Item> jComboBox2;
+    private javax.swing.JComboBox<Item> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

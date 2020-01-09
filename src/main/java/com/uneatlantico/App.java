@@ -118,8 +118,22 @@ public class App
     dijkstra.init(graph);
     dijkstra.setSource(graph.getNode(origin));
     dijkstra.compute();
+    
+    Path shortestPath = dijkstra.getPath(graph.getNode(destination));
+    
+    Iterable<Node> pathNodes = dijkstra.getPathNodes(graph.getNode(destination));
+    Iterable<Edge> pathEdges = dijkstra.getPathEdges(graph.getNode(destination));
+    
+    for (Node node : pathNodes) {
+      node.setAttribute("ui.style", "fill-color: blue;");
+    }
+    
+    for (Edge edge : pathEdges) {
+      edge.setAttribute("ui.style", "fill-color: blue;");
+      edge.setAttribute("ui.style", "size: 3px;");
+    }
 
-    return dijkstra.getPath(graph.getNode(destination));
+    return shortestPath;
   }
 
   public static ArrayList<Node> allReachableNodes(String origin, Graph graph) {
