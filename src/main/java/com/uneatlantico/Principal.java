@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -62,8 +63,8 @@ public class Principal extends javax.swing.JFrame {
       
       
         initComponents();
-        jComboBox2.addItem(null);
-        jComboBox3.addItem(null);
+        jComboBox2.setSelectedIndex(-1);
+        jComboBox3.setSelectedIndex(-1);
         for(Airport a : airportes) {
           jComboBox2.addItem(new Item(a.getId(),a.getName()+"-"+a.getIataCode()));
           jComboBox3.addItem(new Item(a.getId(),a.getName()+"-"+a.getIataCode()));
@@ -235,10 +236,12 @@ public class Principal extends javax.swing.JFrame {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
+      
       Graph graph = new MultiGraph("World");
       graph.setAttribute("ui.quality");
       if (jComboBox2.getSelectedItem() != null) {
         if (jComboBox3.getSelectedItem() != null) {
+        
           addNodesToGraph(airportes,graph);
           addEdgesToGraph(routes,graph);
           graph.setAttribute("ui.stylesheet", style());
@@ -247,8 +250,10 @@ public class Principal extends javax.swing.JFrame {
           graph.addAttribute("ui.antialias");
           Viewer viewer = graph.display(false);
           viewer.disableAutoLayout();
+          
           viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
-          DefaultView view = (DefaultView) viewer.getDefaultView(); 
+          View view = viewer.getDefaultView();
+          
           
           view.setBackLayerRenderer(new LayerRenderer() {
             public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
@@ -259,7 +264,7 @@ public class Principal extends javax.swing.JFrame {
               BufferedImage img = null;
 
               try {
-                url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Mercator_projection_SW.jpg/800px-Mercator_projection_SW.jpg");
+                url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Whole_world_-_land_and_oceans_12000.jpg/1920px-Whole_world_-_land_and_oceans_12000.jpg");
                 conn = url.openConnection();
                 inputStream = conn.getInputStream();
                 img = ImageIO.read(inputStream);
@@ -344,14 +349,15 @@ public class Principal extends javax.swing.JFrame {
             grafo.addNode(a.getId());
             Node node = grafo.getNode(a.getId());
             node.addAttribute("data", a);
-            node.setAttribute("layout.frozen");
-            node.setAttribute("ui.frozen");
-            node.addAttribute("ui.hide");
+            
+            //node.addAttribute("ui.hide");
          // get x   1366, 768
             double x = 6371 * Math.cos(a.getLatitude()) * Math.cos(a.getLongitude());
             double y = 6371 * Math.cos(a.getLatitude()) * Math.sin(a.getLongitude());
-            node.setAttribute("x", a.getLongitude());
-            node.setAttribute("y", a.getLatitude());
+            node.setAttribute("xy", a.getLongitude(),a.getLatitude());
+            //node.setAttribute("y", a.getLatitude());
+            node.addAttribute("ui.frozen");
+            node.addAttribute("layout.frozen");
           }
           catch(Exception e) {
             e.printStackTrace();
@@ -399,14 +405,14 @@ public class Principal extends javax.swing.JFrame {
   }
   
   public static String style() {
-    return "node {" + "size: 3px;" + "fill-color: black;" + "text-mode: hidden;" + "z-index: 2;" + "}"
+    return "node {" + "size: 3px;" + "fill-color: rgba(0,0,0,0);" + "text-mode: hidden;" + "z-index: 2;" + "}"
 
         + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "arrow-size: 2px, 2px;" +"z-index: -1;"+ "}";
   }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private JComboBox<Item> jComboBox2;
+    private javax.swing.JComboBox<Item> jComboBox2;
     private javax.swing.JComboBox<Item> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
