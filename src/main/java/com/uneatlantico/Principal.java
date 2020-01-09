@@ -63,8 +63,8 @@ public class Principal extends javax.swing.JFrame {
       
       
         initComponents();
-        jComboBox2.setSelectedIndex(-1);
-        jComboBox3.setSelectedIndex(-1);
+        jComboBox2.addItem(null);
+        jComboBox3.addItem(null);
         for(Airport a : airportes) {
           jComboBox2.addItem(new Item(a.getId(),a.getName()+"-"+a.getIataCode()));
           jComboBox3.addItem(new Item(a.getId(),a.getName()+"-"+a.getIataCode()));
@@ -239,9 +239,10 @@ public class Principal extends javax.swing.JFrame {
       
       Graph graph = new MultiGraph("World");
       graph.setAttribute("ui.quality");
-      if (jComboBox2.getSelectedItem() != null) {
-        if (jComboBox3.getSelectedItem() != null) {
-        
+      
+      if (jComboBox2.getSelectedIndex() != -1) {
+        if (jComboBox3.getSelectedIndex() != -1) {
+        	System.out.println("point to point");
           addNodesToGraph(airportes,graph);
           addEdgesToGraph(routes,graph);
           graph.setAttribute("ui.stylesheet", style());
@@ -281,10 +282,96 @@ public class Principal extends javax.swing.JFrame {
           Item destination = (Item) jComboBox3.getSelectedItem();
           App.dijkstra(origin.getId(), destination.getId(), graph);
         } else {
+          System.out.println("point to everybody");
+          addNodesToGraph(airportes,graph);
+          addEdgesToGraph(routes,graph);
+          graph.setAttribute("ui.stylesheet", style());
+          graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
+          graph.addAttribute("ui.quality");
+          graph.addAttribute("ui.antialias");
+          Viewer viewer = graph.display(false);
+          viewer.disableAutoLayout();
+          
+          viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+          View view = viewer.getDefaultView();
+          
+          
+          view.setBackLayerRenderer(new LayerRenderer() {
+            public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
+                double minXGu, double minYGu, double maxXGu, double maxYGu) {
+              URL url;
+              URLConnection conn;
+              InputStream inputStream;
+              BufferedImage img = null;
+
+              try {
+                url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Whole_world_-_land_and_oceans_12000.jpg/1920px-Whole_world_-_land_and_oceans_12000.jpg");
+                conn = url.openConnection();
+                inputStream = conn.getInputStream();
+                img = ImageIO.read(inputStream);
+              } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+              
+              graphics.drawImage(img, 0, 0, 1366, 768, null);
+            }
+          });
+          view.resizeFrame(1366, 768);
+          Item origin = (Item) jComboBox2.getSelectedItem();
+          Item destination = (Item) jComboBox3.getSelectedItem();
+          ArrayList<Node> newNodes =  App.allReachableNodes(origin.getId(), graph);
+          for(Node n : newNodes) {
+        	  Node n2 = graph.getNode(n.getId());
+        	  n2.setAttribute("ui.style", "fill-color: blue;");
+              n2.setAttribute("ui.style", "size: 6px;");
+              n2.removeAttribute("ui.hide");
+          }
           
         }
       } else {
+        System.out.println("World");
+        addNodesToGraph(airportes,graph);
+        addEdgesToGraph(routes,graph);
+        graph.setAttribute("ui.stylesheet", style());
+        graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
+        graph.addAttribute("ui.quality");
+        graph.addAttribute("ui.antialias");
+        Viewer viewer = graph.display(false);
+        viewer.disableAutoLayout();
         
+        viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+        View view = viewer.getDefaultView();
+        
+        
+        view.setBackLayerRenderer(new LayerRenderer() {
+          public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
+              double minXGu, double minYGu, double maxXGu, double maxYGu) {
+            URL url;
+            URLConnection conn;
+            InputStream inputStream;
+            BufferedImage img = null;
+
+            try {
+              url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Whole_world_-_land_and_oceans_12000.jpg/1920px-Whole_world_-_land_and_oceans_12000.jpg");
+              conn = url.openConnection();
+              inputStream = conn.getInputStream();
+              img = ImageIO.read(inputStream);
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            
+            graphics.drawImage(img, 0, 0, 1366, 768, null);
+          }
+        });
+        view.resizeFrame(1366, 768);
+        for(Airport a : airportes) {
+      	  Node n2 = graph.getNode(a.getId());
+      	  n2.setAttribute("ui.style", "fill-color: red;");
+            n2.removeAttribute("ui.hide");
+        }
+
       }
       
       
