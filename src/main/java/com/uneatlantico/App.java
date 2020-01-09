@@ -128,6 +128,7 @@ public class App
       node.setAttribute("ui.style", "fill-color: blue;");
       node.setAttribute("ui.style", "size: 6px;");
       node.removeAttribute("ui.hide");
+      node.addAttribute("ui.label", ((Airport) node.getAttribute("data")).getName());
       System.out.println(((Airport) node.getAttribute("data")).getName());
     }
     graph.getNode(origin).setAttribute("ui.style", "fill-color: red;");

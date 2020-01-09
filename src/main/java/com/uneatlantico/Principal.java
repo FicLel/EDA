@@ -335,6 +335,7 @@ public class Principal extends javax.swing.JFrame {
         	  n2.setAttribute("ui.style", "fill-color: blue;");
               n2.setAttribute("ui.style", "size: 6px;");
               n2.removeAttribute("ui.hide");
+              n2.addAttribute("ui.label", ((Airport) n2.getAttribute("data")).getName());
           }
           
         }
@@ -510,9 +511,9 @@ public class Principal extends javax.swing.JFrame {
   }
   
   public static String style() {
-    return "node {" + "size: 3px;" + "fill-color: rgba(0,0,0,0);" + "text-mode: hidden;" + "z-index: 2;" + "}"
+    return "node {" + "size: 3px;" + "fill-color: rgba(0,0,0,0);" + "text-mode: normal;"+"text-alignment: under; text-color: #222; text-background-mode: plain; text-background-color: white;"+"z-index: 2;" + "}"
 
-        + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "arrow-size: 2px, 2px;" +"z-index: -1;"+ "}";
+        + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "arrow-size: 4px, 4px;" +"z-index: -1;"+ "}";
   }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
