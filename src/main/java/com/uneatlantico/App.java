@@ -126,12 +126,14 @@ public class App
     
     for (Node node : pathNodes) {
       node.setAttribute("ui.style", "fill-color: blue;");
+      node.setAttribute("ui.style", "size: 6px;");
       node.removeAttribute("ui.hide");
     }
     
     for (Edge edge : pathEdges) {
-      edge.setAttribute("ui.style", "fill-color: blue;");
-      edge.setAttribute("ui.style", "size: 3px;");
+      edge.setAttribute("ui.style", "fill-color: green;");
+      edge.setAttribute("ui.style", "size: 1px;");
+      edge.removeAttribute("ui.hide");
     }
 
     return shortestPath;

@@ -249,7 +249,7 @@ public class Principal extends javax.swing.JFrame {
           viewer.disableAutoLayout();
           viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
           DefaultView view = (DefaultView) viewer.getDefaultView(); 
-          view.resizeFrame(1366, 768);
+          
           view.setBackLayerRenderer(new LayerRenderer() {
             public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
                 double minXGu, double minYGu, double maxXGu, double maxYGu) {
@@ -271,6 +271,7 @@ public class Principal extends javax.swing.JFrame {
               graphics.drawImage(img, 0, 0, 1366, 768, null);
             }
           });
+          view.resizeFrame(1366, 768);
           Item origin = (Item) jComboBox2.getSelectedItem();
           Item destination = (Item) jComboBox3.getSelectedItem();
           App.dijkstra(origin.getId(), destination.getId(), graph);
@@ -369,6 +370,8 @@ public class Principal extends javax.swing.JFrame {
           .addEdge(r.getAirlineIATA() + r.getSourceAirportIATA() + r.getDestinationAirportIATA(),
               r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true)
           .setAttribute("weight", r.getWeight());
+      Edge e = grafo.getEdge(r.getAirlineIATA() + r.getSourceAirportIATA() + r.getDestinationAirportIATA());
+      e.addAttribute("ui.hide");
       ;
 
     }
@@ -396,9 +399,9 @@ public class Principal extends javax.swing.JFrame {
   }
   
   public static String style() {
-    return "node {" + "size: 3px;" + "fill-color: red;" + "text-mode: hidden;" + "z-index: 2;" + "}"
+    return "node {" + "size: 3px;" + "fill-color: black;" + "text-mode: hidden;" + "z-index: 2;" + "}"
 
-        + "edge {" + "size: 0.5px;" + "shape: cubic-curve;" + "arrow-size: 2px, 2px;" +"z-index: -1;"+ "}";
+        + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "arrow-size: 2px, 2px;" +"z-index: -1;"+ "}";
   }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
