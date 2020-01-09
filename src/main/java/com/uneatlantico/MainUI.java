@@ -17,14 +17,21 @@ public class MainUI extends JFrame{
       leftPanel.setOpaque(true);
       leftPanel.setBackground(Color.decode("#f3f4f6"));
       leftPanel.setMaximumSize(new Dimension(500, 1000));
-      originAirport = new JComboBox();
-      originAirport.setBorder(new EmptyBorder(-160, 0, 0, 0));
+      leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
+      
       
       
       rightPanel =  new JPanel();
       rightPanel.setOpaque(true);
       rightPanel.setBackground(Color.white);
       rightPanel.setMaximumSize(new Dimension(1100, 1000));
+      
+      //Elements 
+      
+      originAirport = new JComboBox();
+      originAirport.setBorder(new EmptyBorder(-160, 0, 0, 0));
+      
+      leftPanel.add(originAirport);
       
       mainPanel.add(leftPanel);
       mainPanel.add(rightPanel);

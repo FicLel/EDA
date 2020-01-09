@@ -42,7 +42,7 @@ public class App
         addNodesToGraph(airportes,graph);
         //addEdgesToGraph(routes,graph);
         graph.setAttribute("ui.stylesheet", style());
-        graph.addAttribute("ui.screenshot", "url('https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg')");
+        graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
         graph.addAttribute("ui.quality");
         graph.addAttribute("ui.antialias");
         Viewer viewer = graph.display(false);
@@ -58,7 +58,7 @@ public class App
             BufferedImage img = null;
 
             try {
-              url = new URL("https://www.mapsland.com/maps/world/large-satellite-map-of-the-world.jpg");
+              url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Mercator_projection_SW.jpg/800px-Mercator_projection_SW.jpg");
               conn = url.openConnection();
               inputStream = conn.getInputStream();
               img = ImageIO.read(inputStream);
@@ -85,8 +85,11 @@ public class App
             node.addAttribute("data", a);
             node.setAttribute("layout.frozen");
             node.setAttribute("ui.frozen");
-            node.setAttribute("x", a.getLongitude());
-            node.setAttribute("y", a.getLatitude());
+         // get x   1366, 768
+            double x = 6371 * Math.cos(a.getLatitude()) * Math.cos(a.getLongitude());
+            double y = 6371 * Math.cos(a.getLatitude()) * Math.sin(a.getLongitude());
+            node.setAttribute("x", x);
+            node.setAttribute("y", y);
           }
           catch(Exception e) {
             e.printStackTrace();
