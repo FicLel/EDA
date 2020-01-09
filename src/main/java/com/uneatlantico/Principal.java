@@ -3,7 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.uneatlantico;
+
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.imageio.ImageIO;
+
+import org.graphstream.algorithm.Dijkstra;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.Path;
+import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.ui.graphicGraph.GraphicGraph;
+import org.graphstream.ui.swingViewer.DefaultView;
+import org.graphstream.ui.swingViewer.LayerRenderer;
+import org.graphstream.ui.swingViewer.Viewer;
+import org.graphstream.graph.*;
+import org.graphstream.graph.implementations.*;
+import org.graphstream.ui.swingViewer.*;
 
 /**
  *
@@ -11,7 +38,10 @@ package com.uneatlantico;
  */
 public class Principal extends javax.swing.JFrame {
 
-    /**
+     public static ArrayList<Airport> airportes;
+     public static ArrayList<Route> routes;
+     public static Graph graph = new MultiGraph("World");
+     /**
      * Creates new form Principal
      */
     public Principal() {
@@ -60,11 +90,21 @@ public class Principal extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(50, 68, 69));
         jButton1.setText("Buscar Rutas");
         jButton1.setName("buttonBuscar"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTextField1.setFont(new java.awt.Font("Lucida Sans Typewriter", 2, 13)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
         jTextField1.setText("Aeropuerto de Origen");
         jTextField1.setName("txtOrigen"); // NOI18N
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField1MouseClicked(evt);
+            }
+        });
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -75,6 +115,11 @@ public class Principal extends javax.swing.JFrame {
         jTextField2.setForeground(new java.awt.Color(204, 204, 204));
         jTextField2.setText("Aeropuerto de Destino");
         jTextField2.setName("txtDestino"); // NOI18N
+        jTextField2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField2MouseClicked(evt);
+            }
+        });
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
@@ -108,7 +153,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -117,14 +162,7 @@ public class Principal extends javax.swing.JFrame {
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 447, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,7 +170,7 @@ public class Principal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(212, 212, 212)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,8 +199,77 @@ public class Principal extends javax.swing.JFrame {
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
+        jTextField2.setText("");
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
+        jTextField1.setText("");
+    }//GEN-LAST:event_jTextField1MouseClicked
+
+    private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
+        // TODO add your handling code here:
+        jTextField2.setText("");
+    }//GEN-LAST:event_jTextField2MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      Reader r = new Reader();
+      try {
+        airportes = r.readFileAirports();
+        routes = r.readFileRoutes(airportes);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+      graph.setAttribute("ui.quality");
+      addNodesToGraph(airportes,graph);
+      //addEdgesToGraph(routes,graph);
+      graph.setAttribute("ui.stylesheet", style());
+      graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
+      graph.addAttribute("ui.quality");
+      graph.addAttribute("ui.antialias");
+      //COmienza desvergue
+      
+      
+      //viewer.disableAutoLayout();
+      View view = viewer.addDefaultView(false); 
+      view.resizeFrame(640, 480);
+      view.setBackLayerRenderer(new LayerRenderer() {
+        public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
+            double minXGu, double minYGu, double maxXGu, double maxYGu) {
+          URL url;
+          URLConnection conn;
+          InputStream inputStream;
+          BufferedImage img = null;
+
+          try {
+            url = new URL("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Mercator_projection_SW.jpg/800px-Mercator_projection_SW.jpg");
+            conn = url.openConnection();
+            inputStream = conn.getInputStream();
+            img = ImageIO.read(inputStream);
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          
+          graphics.drawImage(img, 0, 0, 1366, 768, null);
+        }
+      });
+      jPanel3 =  new javax.swing.JPanel(new GridLayout()){
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(640, 480);
+        }
+      };
+      jPanel3.add(view);
+      jPanel3.getPreferredSize();
+      jPanel3.setPreferredSize(new Dimension(300,300));
+      //Termina Desvergue
+      
+      
+      jTextField1.getText();
+    }//GEN-LAST:event_jButton1ActionPerformed
+     
     /**
      * @param args the command line arguments
      */
@@ -197,11 +304,76 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
+    
+    public static void addNodesToGraph(ArrayList<Airport> airports, Graph grafo) {
+      for(Airport a :  airports) {
+        if(a != null) {
+          try {
+            grafo.addNode(a.getId());
+            Node node = grafo.getNode(a.getId());
+            node.addAttribute("data", a);
+            node.setAttribute("layout.frozen");
+            node.setAttribute("ui.frozen");
+         // get x   1366, 768
+            double x = 6371 * Math.cos(a.getLatitude()) * Math.cos(a.getLongitude());
+            double y = 6371 * Math.cos(a.getLatitude()) * Math.sin(a.getLongitude());
+            node.setAttribute("x", a.getLongitude());
+            node.setAttribute("y", a.getLatitude());
+          }
+          catch(Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+          } 
 
+
+        }
+      }
+    }
+  
+
+  public static void addEdgesToGraph(ArrayList<Route> routes, Graph grafo) {
+    for (Route r : routes) {
+      grafo
+          .addEdge(r.getAirlineIATA() + r.getSourceAirportIATA() + r.getDestinationAirportIATA(),
+              r.getSourceAirport().getId(), r.getDestinationAirport().getId(), true)
+          .setAttribute("weight", r.getWeight());
+      ;
+
+    }
+  }
+
+  public static Path dijkstra(String origin, String destination, Graph graph) {
+    Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, "weight");
+    dijkstra.init(graph);
+    dijkstra.setSource(graph.getNode(origin));
+    dijkstra.compute();
+
+    return dijkstra.getPath(graph.getNode(destination));
+  }
+
+  public static ArrayList<Node> allReachableNodes(String origin, Graph graph) {
+    Node originNode = graph.getNode(origin);
+    Iterator<Node> originNeighbors = originNode.getNeighborNodeIterator();
+    ArrayList<Node> originNeighborsNodes = new ArrayList();
+    
+    while (originNeighbors.hasNext()) {
+      originNeighborsNodes.add(originNeighbors.next());
+    }
+    
+    return originNeighborsNodes;
+  }
+  
+  public static String style() {
+    return "node {" + "size: 3px;" + "fill-color: red;" + "text-mode: hidden;" + "z-index: 0;" + "}"
+
+        + "edge {" + "size: 2px;" + "shape: cubic-curve;" + "fill-color: #cccccc;" + "arrow-size: 2px, 2px;" + "}";
+  }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
