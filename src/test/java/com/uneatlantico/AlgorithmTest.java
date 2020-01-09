@@ -39,4 +39,32 @@ public class AlgorithmTest {
     ArrayList<Node> neighbors = App.allReachableNodes("5800", graph);
     assertEquals(neighbors.toString(), "[1701, 1682]");
   }
+  
+  @Test
+  public void testAnotherRoute() throws IOException {
+    Reader r = new Reader();
+    ArrayList<Airport> airportes = r.readFileAirports();
+    ArrayList<Route> routes = r.readFileRoutes(airportes);
+    Graph graph = new MultiGraph("World");
+    graph.addAttribute("ui.quality");
+    App.addNodesToGraph(airportes,graph);
+    App.addEdgesToGraph(routes,graph);
+    
+    Path path = App.dijkstra("3063", "3653", graph);
+    assertEquals(path.toString(), "[3063, 3093, 3830, 3653]");
+  }
+  
+  @Test
+  public void testNoPosibleRoute() throws IOException {
+    Reader r = new Reader();
+    ArrayList<Airport> airportes = r.readFileAirports();
+    ArrayList<Route> routes = r.readFileRoutes(airportes);
+    Graph graph = new MultiGraph("World");
+    graph.addAttribute("ui.quality");
+    App.addNodesToGraph(airportes,graph);
+    App.addEdgesToGraph(routes,graph);
+    
+    Path path = App.dijkstra("1623", "2354", graph);
+    assertEquals(path.toString(), "[]"); 
+  }
 }
