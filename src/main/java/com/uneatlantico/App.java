@@ -128,8 +128,10 @@ public class App
       node.setAttribute("ui.style", "fill-color: blue;");
       node.setAttribute("ui.style", "size: 6px;");
       node.removeAttribute("ui.hide");
+      System.out.println(((Airport) node.getAttribute("data")).getName());
     }
-    
+    graph.getNode(origin).setAttribute("ui.style", "fill-color: red;");
+    graph.getNode(destination).setAttribute("ui.style", "fill-color: yellow;");
     for (Edge edge : pathEdges) {
       edge.setAttribute("ui.style", "fill-color: green;");
       edge.setAttribute("ui.style", "size: 1px;");

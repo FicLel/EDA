@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Vector;
@@ -56,6 +57,14 @@ public class Principal extends javax.swing.JFrame {
       Vector model = new Vector();
       try {
         airportes =  r.readFileAirports();
+        
+        //Sorting by compare
+        Collections.sort(airportes, new Comparator<Airport>() {
+          @Override
+          public int compare(Airport a1, Airport a2) {
+            return a1.getName().compareTo(a2.getName());
+          }
+        });
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
@@ -428,19 +437,28 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-    
+    /*
+     * We add all the nodes to our graph
+     * 
+     * @Param ArrayList Airport
+     * @Param Graph graph
+     * 
+     * return void
+     * */
     public static void addNodesToGraph(ArrayList<Airport> airports, Graph grafo) {
       for(Airport a :  airports) {
         if(a != null) {
           try {
+            //We assign an Id to our node, in this case the airport id
             grafo.addNode(a.getId());
             Node node = grafo.getNode(a.getId());
             node.addAttribute("data", a);
             
-            //node.addAttribute("ui.hide");
+            //In process we need to escalate the coordinates
          // get x   1366, 768
             double x = 6371 * Math.cos(a.getLatitude()) * Math.cos(a.getLongitude());
             double y = 6371 * Math.cos(a.getLatitude()) * Math.sin(a.getLongitude());
+            //
             node.setAttribute("xy", a.getLongitude(),a.getLatitude());
             //node.setAttribute("y", a.getLatitude());
             node.addAttribute("ui.frozen");
