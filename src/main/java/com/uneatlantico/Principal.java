@@ -345,6 +345,7 @@ public class Principal extends javax.swing.JFrame {
             node.addAttribute("data", a);
             node.setAttribute("layout.frozen");
             node.setAttribute("ui.frozen");
+            node.addAttribute("ui.hide");
          // get x   1366, 768
             double x = 6371 * Math.cos(a.getLatitude()) * Math.cos(a.getLongitude());
             double y = 6371 * Math.cos(a.getLatitude()) * Math.sin(a.getLongitude());

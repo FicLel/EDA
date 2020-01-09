@@ -126,6 +126,7 @@ public class App
     
     for (Node node : pathNodes) {
       node.setAttribute("ui.style", "fill-color: blue;");
+      node.removeAttribute("ui.hide");
     }
     
     for (Edge edge : pathEdges) {
