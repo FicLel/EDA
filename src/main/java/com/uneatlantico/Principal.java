@@ -210,7 +210,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-      Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+      Graph graph = new MultiGraph("World");
       graph.setAttribute("ui.quality");
       addNodesToGraph(airportes,graph);
       //addEdgesToGraph(routes,graph);
@@ -218,12 +218,11 @@ public class Principal extends javax.swing.JFrame {
       graph.addAttribute("ui.screenshot", "url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gall%E2%80%93Peters_projection_SW.jpg/1024px-Gall%E2%80%93Peters_projection_SW.jpg')");
       graph.addAttribute("ui.quality");
       graph.addAttribute("ui.antialias");
-      //COmienza desvergue
-      
-      
-      //viewer.disableAutoLayout();
-      View view = viewer.addDefaultView(false); 
-      view.resizeFrame(640, 480);
+      Viewer viewer = graph.display(false);
+      viewer.disableAutoLayout();
+      viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+      DefaultView view = (DefaultView) viewer.getDefaultView(); 
+      view.resizeFrame(1366, 768);
       view.setBackLayerRenderer(new LayerRenderer() {
         public void render(Graphics2D graphics, GraphicGraph graph, double px2Gu, int widthPx, int heightPx,
             double minXGu, double minYGu, double maxXGu, double maxYGu) {
@@ -245,7 +244,7 @@ public class Principal extends javax.swing.JFrame {
           graphics.drawImage(img, 0, 0, 1366, 768, null);
         }
       });
-      this.add(view);
+      
       //Termina Desvergue
       
       
